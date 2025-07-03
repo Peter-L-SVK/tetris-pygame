@@ -38,10 +38,10 @@ A classic Tetris implementation built with Python and Pygame, featuring modern e
 - **ESC**: Return to previous screen (from high scores)
 
 ### Game Screens
-1. **Main Menu**:
-    1. Play Game
-    2. View High Scores
-    3. Quit
+1. **Main Menu**:  
+   '1.' - Play Game  
+   '2.' - View High Scores  
+   '3.' - Quit  
 
 2. **Game Screen**:
    - Current score display

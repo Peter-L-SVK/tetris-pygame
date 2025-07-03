@@ -1,7 +1,7 @@
 # Tetris Game with Pygame
 
-A classic Tetris implementation built with Python and Pygame, featuring modern enhancements like high score tracking and multiple game screens.
-![Tetris](demo.png) ![Tetreis](demo2.png) 
+A classic Tetris implementation built with Python and Pygame, featuring modern enhancements like high score tracking and multiple game screens.  
+![Tetris](scrshots/demo.png)   ![Tetreis](scrshots/demo2.png) 
 ## Features
 
 - 🎮 Classic Tetris gameplay with all 7 tetromino pieces

@@ -44,17 +44,22 @@ A classic Tetris implementation built with Python and Pygame, featuring modern e
    '3.' - Quit  
 
 2. **Game Screen**:
-   - Current score display
-   - Next piece preview
-   - Standard Tetris gameplay
+   - Current score display  
+   - Next piece preview  
+   - Standard Tetris gameplay  
 
-3. **Game Over Screen**:
-   - Enter your name for high scores
-   - Options to play again, view scores, or quit
+3. **Game Over Screen**:  
+   - Enter your name for high scores  
+   - Options to play again, view scores, or quit  
 
-4. **High Scores Screen**:
-   - Displays top 10 scores
-   - Press ESC to return
+4. **High Scores Screen**:  
+   - Displays top 10 scores  
+   - Press ESC to return  
+
+5. **Credits Screen**:  
+   - Scrolling credits from bottom to top  
+   - Adjustable scroll speed  
+   - Press ESC to return  
 
 ## File Structure
 

@@ -24,13 +24,16 @@ def main():
     
     run = True
     while run:
-        start_game, show_scores, = show_start_screen(screen)
-        if not start_game and not show_scores:
+        start_game, show_scores, show_credits = show_start_screen(screen)
+        if not start_game and not show_scores and not show_credits:
             break
         
         if show_scores:
             continue  
-        
+
+        if show_credits:
+            continue  
+
         grid = create_grid(GRID_WIDTH, GRID_HEIGHT)
         current_piece = Tetromino(grid_width=GRID_WIDTH)
         next_piece = Tetromino(grid_width=GRID_WIDTH)

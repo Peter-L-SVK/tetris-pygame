@@ -1,5 +1,5 @@
-import pygame
 import json
+import pygame
 import os
 
 def load_high_scores():
@@ -153,36 +153,54 @@ def show_start_screen(surface):
     # Play game option
     play_text = font.render("1. Play Game", 1, (255, 255, 255))
     surface.blit(play_text, (surface.get_width()//2 - play_text.get_width()//2, 
-                           surface.get_height()//2 - 50))
+                           surface.get_height()//2 - 80))
     
     # View high scores option
     scores_text = font.render("2. View High Scores", 1, (255, 255, 255))
     surface.blit(scores_text, (surface.get_width()//2 - scores_text.get_width()//2, 
-                              surface.get_height()//2 + 20))
+                              surface.get_height()//2 - 20))
 
+    # Credits option
+    credits_text = font.render("3. Credits", 1, (255, 255, 255))
+    surface.blit(credits_text, (surface.get_width()//2 - credits_text.get_width()//2, 
+                              surface.get_height()//2 + 40))
+    
     # Quit option
-    quit_text = font.render("3. Quit", 1, (255, 255, 255))
+    quit_text = font.render("4. Quit", 1, (255, 255, 255))
     surface.blit(quit_text, (surface.get_width()//2 - quit_text.get_width()//2, 
-                             surface.get_height()//2 + 100))
+                           surface.get_height()//2 + 100))
+    
+    # Small credits at bottom
+    small_font = pygame.font.SysFont("comicsans", 20)
+    bottom_text = small_font.render("© 2025 Peter Leukanič - MIT License", 1, (150, 150, 150))
+    surface.blit(bottom_text, (surface.get_width()//2 - bottom_text.get_width()//2, 
+                             surface.get_height() - 30))
     
     pygame.display.update()
     
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False, False
+                return False, False, False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    return True, False
+                    return True, False, False  # Start game
                 if event.key == pygame.K_2:
                     # Show high scores screen
                     should_continue = show_high_scores_screen(surface)
                     if not should_continue:
-                        return False, False
-                    # Redraw start screen after returning from high scores
+                        return False, False, False
+                    # Redraw start screen
                     return show_start_screen(surface)
                 if event.key == pygame.K_3:
-                    return False, False
+                    # Show credits screen
+                    should_continue = show_credits_screen(surface)
+                    if not should_continue:
+                        return False, False, False
+                    # Redraw start screen
+                    return show_start_screen(surface)
+                if event.key == pygame.K_4:
+                    return False, False, False  # Quit
     return True, False, False
 
 def show_game_over_screen(surface, score):
@@ -199,8 +217,8 @@ def show_game_over_screen(surface, score):
     
     while True:
         surface.fill((0, 0, 0))
-        draw_text_middle(surface, "GAME OVER", 50, (255, 255, 255), -120)
-        draw_text_middle(surface, f"Your Score: {score}", 40, (255, 255, 255), -60)
+        draw_text_middle(surface, "GAME OVER", 50, (255, 255, 255), -150)
+        draw_text_middle(surface, f"Your Score: {score}", 40, (255, 255, 255), -100)
         
         # Draw menu options
         font = pygame.font.SysFont("comicsans", 40)
@@ -208,17 +226,28 @@ def show_game_over_screen(surface, score):
         # Play again option
         play_text = font.render("1. Play Again", 1, (255, 255, 255))
         surface.blit(play_text, (surface.get_width()//2 - play_text.get_width()//2, 
-                               surface.get_height()//2))
+                                 surface.get_height()//2 - 50))
         
         # View high scores option
         scores_text = font.render("2. View High Scores", 1, (255, 255, 255))
         surface.blit(scores_text, (surface.get_width()//2 - scores_text.get_width()//2, 
-                                 surface.get_height()//2 + 50))
+                                   surface.get_height()//2))
+
+        # Credits option
+        credits_text = font.render("3. Credits", 1, (255, 255, 255))
+        surface.blit(credits_text, (surface.get_width()//2 - credits_text.get_width()//2, 
+                                    surface.get_height()//2 + 50))
         
         # Quit option
-        quit_text = font.render("3. Quit", 1, (255, 255, 255))
+        quit_text = font.render("4. Quit", 1, (255, 255, 255))
         surface.blit(quit_text, (surface.get_width()//2 - quit_text.get_width()//2, 
-                               surface.get_height()//2 + 100))
+                                 surface.get_height()//2 + 100))
+
+        # Small credits at bottom
+        small_font = pygame.font.SysFont("comicsans", 20)
+        bottom_text = small_font.render("© 2025 Peter Leukanič - MIT License", 1, (150, 150, 150))
+        surface.blit(bottom_text, (surface.get_width()//2 - bottom_text.get_width()//2, 
+                                   surface.get_height() - 30))
         
         pygame.display.update()
         
@@ -233,9 +262,14 @@ def show_game_over_screen(surface, score):
                     should_continue = show_high_scores_screen(surface)
                     if not should_continue:
                         return False
+                if event.key == pygame.K_3:
+                    # Show credits screen
+                    should_continue = show_credits_screen(surface)
+                    if not should_continue:
+                        return False
                     # Redraw game over screen after returning
                     continue
-                if event.key == pygame.K_3:
+                if event.key == pygame.K_4:
                     return False
 
 def show_high_scores_screen(surface):
@@ -266,3 +300,87 @@ def show_high_scores_screen(surface):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return True
+
+def show_credits_screen(surface):
+    """Display scrolling credits from bottom to top"""
+    credits = [
+        "CREDITS",
+        "",
+        "Game Development",
+        "Peter Leukanič",
+        "",
+        "Programming",
+        "Peter Leukanič",
+        "",
+        "Game Design",
+        "Peter Leukanič",
+        "",
+        "Special Thanks",
+        "Pygame Community",
+        "",
+        "License",
+        "MIT License",
+        "",
+        "© 2025 All Rights Reserved"
+    ]
+    
+    # Create a surface that will contain all credits text
+    font = pygame.font.SysFont("comicsans", 30)
+    line_height = 40
+    total_height = len(credits) * line_height + surface.get_height()
+    credits_surface = pygame.Surface((surface.get_width(), total_height))
+    credits_surface.fill((0, 0, 0))
+    
+    # Render all credits text onto the credits surface
+    for i, text in enumerate(credits):
+        if text == "CREDITS":
+            title_font = pygame.font.SysFont("comicsans", 50, bold=True)
+            text_surface = title_font.render(text, True, (255, 255, 255))
+        else:
+            text_surface = font.render(text, True, (255, 255, 255))
+        
+        x_pos = credits_surface.get_width() // 2 - text_surface.get_width() // 2
+        y_pos = i * line_height + surface.get_height()  # Start below visible area
+        credits_surface.blit(text_surface, (x_pos, y_pos))
+    
+    scroll_speed = 1  # Pixels per frame
+    y_offset = 0
+    clock = pygame.time.Clock()
+    
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return True
+                # Allow speed control with up/down arrows
+                if event.key == pygame.K_UP:
+                    scroll_speed = max(1, scroll_speed - 0.5)
+                if event.key == pygame.K_DOWN:
+                    scroll_speed = min(5, scroll_speed + 0.5)
+                if event.key == pygame.K_SPACE:
+                    scroll_speed = 0  # Pause
+        
+        # Scroll the credits
+        y_offset += scroll_speed
+        
+        # Reset if we've scrolled all the way through
+        if y_offset > total_height:
+            y_offset = 0
+        
+        # Draw
+        surface.fill((0, 0, 0))
+        surface.blit(credits_surface, (0, -y_offset))
+        
+        # Show scroll speed indicator
+        speed_font = pygame.font.SysFont("comicsans", 20)
+        speed_text = speed_font.render(f"Scroll Speed: {scroll_speed:.1f}x (Up/Down to adjust, SPACE to pause)", 
+                                     True, (150, 150, 150))
+        surface.blit(speed_text, (20, surface.get_height() - 30))
+        
+        pygame.display.flip()
+        clock.tick(60)
+    
+    return True
